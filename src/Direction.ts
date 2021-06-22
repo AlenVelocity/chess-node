@@ -1,7 +1,7 @@
 /**
  * Enumeration to handle the move generation in n/e/s/w directions
  */
- export enum Direction {
+export enum Direction {
     Up,
     Down,
     Left,
@@ -11,7 +11,7 @@
 /**
  * Enumeration to handle the move generation in diagonal directions
  */
- export enum DirectionAngle {
+export enum DirectionAngle {
     UpRight,
     UpLeft,
     DownRight,
