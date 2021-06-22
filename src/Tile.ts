@@ -1,4 +1,4 @@
-export class Tile {
+export default class Tile {
     public x: number
     public y: number
 
