@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsc -p .",
     "lint": "eslint \"src/**/*.ts\"",
+    "doc": "npx typedoc src/**/*.ts",
     "prettier-format": "prettier --config .prettierrc \"src/**/*.ts\" --write"
   },
   "repository": {
@@ -22,6 +23,7 @@
     "@typescript-eslint/parser": "^4.22.1",
     "eslint": "^7.26.0",
     "prettier": "^2.2.1",
+    "typedoc": "^0.21.0",
     "typescript": "^4.2.4"
   },
   "license": "GPL-3.0-or-later",
