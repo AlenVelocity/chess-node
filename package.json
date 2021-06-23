@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "description": "Chess on NODE",
   "main": "./dist/index.js",
+  "types": "dist",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p .",
     "lint": "eslint \"src/**/*.ts\"",
