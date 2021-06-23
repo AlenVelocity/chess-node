@@ -34,7 +34,7 @@ or
 const Game = require('chess-node').default
 ```
 -----------------
-### Buckle Up. Things are gonna get comlplex.
+### Buckle Up. Things are gonna get complex.
 
 ## Creating an Instance
 
