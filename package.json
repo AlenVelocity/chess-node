@@ -1,6 +1,6 @@
 {
   "name": "chess-node",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Chess on NODE",
   "main": "./dist/index.js",
   "types": "dist",
