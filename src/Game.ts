@@ -6,7 +6,6 @@ import Tile from './Tile'
 
 // class to handle the game logic
 export class Game {
-
     over = false
     ct = 0
     /**
@@ -452,4 +451,45 @@ export class Game {
             }
         }
     }
+}
+
+export const genMove = (str: string): Tile | null => {
+    let num1
+    if (str.length > 2) {
+        return null
+    }
+    str = str.toUpperCase()
+    switch (str[0]) {
+        case 'A':
+            num1 = 1
+            break
+        case 'B':
+            num1 = 2
+            break
+        case 'C':
+            num1 = 3
+            break
+        case 'D':
+            num1 = 4
+            break
+        case 'E':
+            num1 = 5
+            break
+        case 'F':
+            num1 = 6
+            break
+        case 'G':
+            num1 = 7
+            break
+        case 'H':
+            num1 = 8
+            break
+        default:
+            num1 = null
+    }
+
+    const num2 = parseInt(str[1])
+
+    if (typeof num2 === 'number' && typeof num1 === 'number' && num1 && num2) return new Tile(num2, num1)
+    return null
 }
