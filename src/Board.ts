@@ -112,23 +112,23 @@ export default class Board {
         const pieces = this.getPieces(white, black)
 
         // building the final string by accessing the location of the piece in the pieces array and placing it in the baord string
-        boardString += '`\n    A    B    C    D    E    F    G    H  \n'
+        boardString += '`\n    1    2    3    4    5    6    7    8  \n'
         boardString += '  ________________________________________\n'
-        boardString += `1 | ${pieces[0]} | ${pieces[1]} | ${pieces[2]} | ${pieces[3]} | ${pieces[4]} | ${pieces[5]} | ${pieces[6]} | ${pieces[7]} |\n`
+        boardString += `A | ${pieces[0]} | ${pieces[1]} | ${pieces[2]} | ${pieces[3]} | ${pieces[4]} | ${pieces[5]} | ${pieces[6]} | ${pieces[7]} |\n`
         boardString += `  |____|____|____|____|____|____|____|____|\n`
-        boardString += `2 | ${pieces[8]} | ${pieces[9]} | ${pieces[10]} | ${pieces[11]} | ${pieces[12]} | ${pieces[13]} | ${pieces[14]} | ${pieces[15]} |\n`
+        boardString += `B | ${pieces[8]} | ${pieces[9]} | ${pieces[10]} | ${pieces[11]} | ${pieces[12]} | ${pieces[13]} | ${pieces[14]} | ${pieces[15]} |\n`
         boardString += '  |____|____|____|____|____|____|____|____|\n'
-        boardString += `3 | ${pieces[16]} | ${pieces[17]} | ${pieces[18]} | ${pieces[19]} | ${pieces[20]} | ${pieces[21]} | ${pieces[22]} | ${pieces[23]} |\n`
+        boardString += `C | ${pieces[16]} | ${pieces[17]} | ${pieces[18]} | ${pieces[19]} | ${pieces[20]} | ${pieces[21]} | ${pieces[22]} | ${pieces[23]} |\n`
         boardString += '  |____|____|____|____|____|____|____|____|\n'
-        boardString += `4 | ${pieces[24]} | ${pieces[25]} | ${pieces[26]} | ${pieces[27]} | ${pieces[28]} | ${pieces[29]} | ${pieces[30]} | ${pieces[31]} |\n`
+        boardString += `D | ${pieces[24]} | ${pieces[25]} | ${pieces[26]} | ${pieces[27]} | ${pieces[28]} | ${pieces[29]} | ${pieces[30]} | ${pieces[31]} |\n`
         boardString += '  |____|____|____|____|____|____|____|____|\n'
-        boardString += `5 | ${pieces[32]} | ${pieces[33]} | ${pieces[34]} | ${pieces[35]} | ${pieces[36]} | ${pieces[37]} | ${pieces[38]} | ${pieces[39]} |\n`
+        boardString += `E | ${pieces[32]} | ${pieces[33]} | ${pieces[34]} | ${pieces[35]} | ${pieces[36]} | ${pieces[37]} | ${pieces[38]} | ${pieces[39]} |\n`
         boardString += '  |____|____|____|____|____|____|____|____|\n'
-        boardString += `6 | ${pieces[40]} | ${pieces[41]} | ${pieces[42]} | ${pieces[43]} | ${pieces[44]} | ${pieces[45]} | ${pieces[46]} | ${pieces[47]} |\n`
+        boardString += `F | ${pieces[40]} | ${pieces[41]} | ${pieces[42]} | ${pieces[43]} | ${pieces[44]} | ${pieces[45]} | ${pieces[46]} | ${pieces[47]} |\n`
         boardString += '  |____|____|____|____|____|____|____|____|\n'
-        boardString += `7 | ${pieces[48]} | ${pieces[49]} | ${pieces[50]} | ${pieces[51]} | ${pieces[52]} | ${pieces[53]} | ${pieces[54]} | ${pieces[55]} |\n`
+        boardString += `G | ${pieces[48]} | ${pieces[49]} | ${pieces[50]} | ${pieces[51]} | ${pieces[52]} | ${pieces[53]} | ${pieces[54]} | ${pieces[55]} |\n`
         boardString += '  |____|____|____|____|____|____|____|____|\n'
-        boardString += `8 | ${pieces[56]} | ${pieces[57]} | ${pieces[58]} | ${pieces[59]} | ${pieces[60]} | ${pieces[61]} | ${pieces[62]} | ${pieces[63]} |\n`
+        boardString += `H | ${pieces[56]} | ${pieces[57]} | ${pieces[58]} | ${pieces[59]} | ${pieces[60]} | ${pieces[61]} | ${pieces[62]} | ${pieces[63]} |\n`
         boardString += '  |____|____|____|____|____|____|____|____|\n`'
 
         // returns the board string

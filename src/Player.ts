@@ -35,10 +35,10 @@ export default class Player {
             for (let i = 1; i <= 8; i++) {
                 this.pawns.push(new Pawn(new Tile(i, 2), false, true))
             }
-            this.queen = new Queen(new Tile(5, 1), false, true)
+            this.queen = new Queen(new Tile(4, 1), false, true)
             this.bishops.push(new Bishop(new Tile(3, 1), false, true))
             this.bishops.push(new Bishop(new Tile(6, 1), false, true))
-            this.king = new King(new Tile(4, 1), false, true)
+            this.king = new King(new Tile(5, 1), false, true)
             this.knights.push(new Knight(new Tile(2, 1), false, true))
             this.knights.push(new Knight(new Tile(7, 1), false, true))
         } else {
@@ -47,10 +47,10 @@ export default class Player {
             for (let i = 1; i <= 8; i++) {
                 this.pawns.push(new Pawn(new Tile(i, 7)))
             }
-            this.queen = new Queen(new Tile(5, 8))
+            this.queen = new Queen(new Tile(4, 8))
             this.bishops.push(new Bishop(new Tile(3, 8)))
             this.bishops.push(new Bishop(new Tile(6, 8)))
-            this.king = new King(new Tile(4, 8))
+            this.king = new King(new Tile(5, 8))
             this.knights.push(new Knight(new Tile(2, 8)))
             this.knights.push(new Knight(new Tile(7, 8)))
         }

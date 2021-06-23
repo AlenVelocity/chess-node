@@ -52,132 +52,135 @@ export class Game {
             func('White move')
 
             // starts the event emitter.
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            this.eventEmitter.on(this.gameEventString, (move: any, myFunc: typeof func, author: string, pre?: () =>void) => {
-                if (whiteTurn && author == whitePlayer) {
-                    // temp game for the purposes of calculating check
-                    const tempGame = Game.fromGame(this)
-                    let isCheck = false
-                    if (typeof move.piece != 'undefined') {
-                        // checks to see if moving will put the king in check, if it does then it's an illegal move
-                        if (tempGame.castle(move.piece, tempGame.white, tempGame.black)) {
-                            if (tempGame.check(tempGame.white, tempGame.black, tempGame.board)) {
-                                myFunc('illegal move')
-                                isCheck = true
+            this.eventEmitter.on(
+                this.gameEventString,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                (move: any, myFunc: typeof func, author: string, pre?: () => void) => {
+                    if (whiteTurn && author == whitePlayer) {
+                        // temp game for the purposes of calculating check
+                        const tempGame = Game.fromGame(this)
+                        let isCheck = false
+                        if (typeof move.piece != 'undefined') {
+                            // checks to see if moving will put the king in check, if it does then it's an illegal move
+                            if (tempGame.castle(move.piece, tempGame.white, tempGame.black)) {
+                                if (tempGame.check(tempGame.white, tempGame.black, tempGame.board)) {
+                                    myFunc('illegal move')
+                                    isCheck = true
+                                }
                             }
+                        } else {
+                            // checks to see if moving will put the king in check, if it does then it's an illegal move
+                            if (tempGame.white.movePiece(move.from, move.to, tempGame.black, tempGame.board)) {
+                                if (tempGame.check(tempGame.white, tempGame.black, tempGame.board)) {
+                                    myFunc('illegal move')
+                                    isCheck = true
+                                }
+                            }
+                        }
+
+                        // if the player isn't in check then proceed as normal
+                        if (!isCheck) {
+                            // tries to moves the piece, if it's false send message saying illegal move
+                            let success
+                            if (typeof move.piece != 'undefined') {
+                                success = this.castle(move.piece, this.white, this.black)
+                            } else {
+                                success = this.white.movePiece(move.from, move.to, this.black, this.board)
+                            }
+                            if (!success) {
+                                myFunc('illegal move')
+                            } else {
+                                // run the pawn promotion function on white.
+                                this.promotePawn(this.white)
+                                // updated board
+                                if (pre) pre()
+                                myFunc('Black move')
+                                // switch turn to black
+                                whiteTurn = !success
+                            }
+                        }
+                        // if the player is in check then send a message stating so
+                        if (this.check(this.black, this.white, this.board)) {
+                            myFunc('Black is now in check')
+                        }
+                    } else if (!whiteTurn && author == blackPlayer) {
+                        // temp game for the purposes of calculating check
+                        const tempGame = Game.fromGame(this)
+                        let isCheck = false
+
+                        if (typeof move.piece != 'undefined') {
+                            // checks to see if moving will put the king in check, if it does then it's an illegal move
+                            if (tempGame.castle(move.piece, tempGame.black, tempGame.white)) {
+                                if (tempGame.check(tempGame.black, tempGame.white, tempGame.board)) {
+                                    myFunc('illegal move')
+                                    isCheck = true
+                                }
+                            }
+                        } else {
+                            // checks to see if moving will put the king in check, if it does then it's an illegal move
+                            if (tempGame.black.movePiece(move.from, move.to, tempGame.white, tempGame.board)) {
+                                if (tempGame.check(tempGame.black, tempGame.white, tempGame.board)) {
+                                    myFunc('illegal move')
+                                    isCheck = true
+                                }
+                            }
+                        }
+                        // if the palyer isn't in check then proceed as normal
+                        if (!isCheck) {
+                            // tries to moves the piece, if it's false send message saying illegal move
+                            let success
+                            if (typeof move.piece != 'undefined') {
+                                success = this.castle(move.piece, this.black, this.white)
+                            } else {
+                                success = this.black.movePiece(move.from, move.to, this.white, this.board)
+                            }
+                            if (!success) {
+                                myFunc('illegal move')
+                            } else {
+                                // run the pawn promotion function on black.
+                                this.promotePawn(this.black)
+
+                                // update board
+                                if (pre) pre()
+                                myFunc('White move')
+
+                                // switch turn to white
+                                whiteTurn = success
+                            }
+                        }
+                        // if the player is in check then send a message stating so
+                        if (this.check(this.white, this.black, this.board)) {
+                            myFunc('White is now in check')
                         }
                     } else {
-                        // checks to see if moving will put the king in check, if it does then it's an illegal move
-                        if (tempGame.white.movePiece(move.from, move.to, tempGame.black, tempGame.board)) {
-                            if (tempGame.check(tempGame.white, tempGame.black, tempGame.board)) {
-                                myFunc('illegal move')
-                                isCheck = true
-                            }
-                        }
+                        myFunc('Not your turn')
                     }
 
-                    // if the player isn't in check then proceed as normal
-                    if (!isCheck) {
-                        // tries to moves the piece, if it's false send message saying illegal move
-                        let success
-                        if (typeof move.piece != 'undefined') {
-                            success = this.castle(move.piece, this.white, this.black)
-                        } else {
-                            success = this.white.movePiece(move.from, move.to, this.black, this.board)
-                        }
-                        if (!success) {
-                            myFunc('illegal move')
-                        } else {
-                            // run the pawn promotion function on white.
-                            this.promotePawn(this.white)
-                            // updated board
-                            if (pre) pre()
-                            myFunc('Black move')
-                            // switch turn to black
-                            whiteTurn = !success
-                        }
+                    // check to see if game is a stalemate, if so end game
+                    if (this.stalemate()) {
+                        this.over = true
+                        if (pre) pre()
+                        myFunc('Stalemate.')
+                        this.eventEmitter.emit('gameOver')
                     }
-                    // if the player is in check then send a message stating so
-                    if (this.check(this.black, this.white, this.board)) {
-                        myFunc('Black is now in check')
-                    }
-                } else if (!whiteTurn && author == blackPlayer) {
-                    // temp game for the purposes of calculating check
-                    const tempGame = Game.fromGame(this)
-                    let isCheck = false
 
-                    if (typeof move.piece != 'undefined') {
-                        // checks to see if moving will put the king in check, if it does then it's an illegal move
-                        if (tempGame.castle(move.piece, tempGame.black, tempGame.white)) {
-                            if (tempGame.check(tempGame.black, tempGame.white, tempGame.board)) {
-                                myFunc('illegal move')
-                                isCheck = true
-                            }
-                        }
-                    } else {
-                        // checks to see if moving will put the king in check, if it does then it's an illegal move
-                        if (tempGame.black.movePiece(move.from, move.to, tempGame.white, tempGame.board)) {
-                            if (tempGame.check(tempGame.black, tempGame.white, tempGame.board)) {
-                                myFunc('illegal move')
-                                isCheck = true
-                            }
-                        }
+                    // check to see if white player is in check mate, if so end game
+                    if (this.checkMate(this.white, this.black, this.board)) {
+                        this.over = true
+                        if (pre) pre()
+                        myFunc('White is in check mate, Black wins!!')
+                        myFunc('over')
+                        this.eventEmitter.emit('gameOver')
+                    } else if (this.checkMate(this.black, this.white, this.board)) {
+                        // check to see if black  player is in check mate, if so end game
+                        this.over = true
+                        if (pre) pre()
+                        myFunc('Black is in check mate, White wins!!')
+                        myFunc('over')
+                        this.eventEmitter.emit('gameOver')
                     }
-                    // if the palyer isn't in check then proceed as normal
-                    if (!isCheck) {
-                        // tries to moves the piece, if it's false send message saying illegal move
-                        let success
-                        if (typeof move.piece != 'undefined') {
-                            success = this.castle(move.piece, this.black, this.white)
-                        } else {
-                            success = this.black.movePiece(move.from, move.to, this.white, this.board)
-                        }
-                        if (!success) {
-                            myFunc('illegal move')
-                        } else {
-                            // run the pawn promotion function on black.
-                            this.promotePawn(this.black)
-
-                            // update board
-                            if (pre) pre()
-                            myFunc('White move')
-
-                            // switch turn to white
-                            whiteTurn = success
-                        }
-                    }
-                    // if the player is in check then send a message stating so
-                    if (this.check(this.white, this.black, this.board)) {
-                        myFunc('White is now in check')
-                    }
-                } else {
-                    myFunc('Not your turn')
                 }
-
-                // check to see if game is a stalemate, if so end game
-                if (this.stalemate()) {
-                    this.over = true
-                    if (pre) pre()
-                    myFunc('Stalemate.')
-                    this.eventEmitter.emit('gameOver')
-                }
-
-                // check to see if white player is in check mate, if so end game
-                if (this.checkMate(this.white, this.black, this.board)) {
-                    this.over = true
-                    if (pre) pre()
-                    myFunc('White is in check mate, Black wins!!')
-                    myFunc('over')
-                    this.eventEmitter.emit('gameOver')
-                } else if (this.checkMate(this.black, this.white, this.board)) {
-                    // check to see if black  player is in check mate, if so end game
-                    this.over = true
-                    if (pre) pre()
-                    myFunc('Black is in check mate, White wins!!')
-                    myFunc('over')
-                    this.eventEmitter.emit('gameOver')
-                }
-            })
+            )
         }
     }
 
@@ -462,6 +465,73 @@ export class Game {
             }
         }
     }
+}
+
+export const genRealMove = (str: string): Tile | null => {
+    let char, num
+    if (str.length > 2) {
+        return null
+    }
+    str = str.toUpperCase()
+    switch (str[1]) {
+        case '1':
+            char = 'A'
+            break
+        case '2':
+            char = 'B'
+            break
+        case '3':
+            char = 'C'
+            break
+        case '4':
+            char = 'D'
+            break
+        case '5':
+            char = 'E'
+            break
+        case '6':
+            char = 'F'
+            break
+        case '7':
+            char = 'G'
+            break
+        case '8':
+            char = 'H'
+            break
+        default:
+            char = null
+    }
+
+    switch (str[0]) {
+        case 'A':
+            num = 1
+            break
+        case 'B':
+            num = 2
+            break
+        case 'C':
+            num = 3
+            break
+        case 'D':
+            num = 4
+            break
+        case 'E':
+            num = 5
+            break
+        case 'F':
+            num = 6
+            break
+        case 'G':
+            num = 7
+            break
+        case 'H':
+            num = 8
+            break
+        default:
+            num = null
+    }
+
+    return genMove(`${char}${num}`)
 }
 
 export const genMove = (str: string): Tile | null => {
