@@ -53,11 +53,10 @@ export class Game {
 
             // starts the event emitter.
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            this.eventEmitter.on(this.gameEventString, (move: any, myFunc: typeof func, author: string) => {
+            this.eventEmitter.on(this.gameEventString, (move: any, myFunc: typeof func, author: string, pre?: () =>void) => {
                 if (whiteTurn && author == whitePlayer) {
                     // temp game for the purposes of calculating check
                     const tempGame = Game.fromGame(this)
-                    console.log(move)
                     let isCheck = false
                     if (typeof move.piece != 'undefined') {
                         // checks to see if moving will put the king in check, if it does then it's an illegal move
@@ -158,6 +157,7 @@ export class Game {
                 // check to see if game is a stalemate, if so end game
                 if (this.stalemate()) {
                     this.over = true
+                    if (pre) pre()
                     myFunc('Stalemate.')
                     this.eventEmitter.emit('gameOver')
                 }
@@ -165,12 +165,14 @@ export class Game {
                 // check to see if white player is in check mate, if so end game
                 if (this.checkMate(this.white, this.black, this.board)) {
                     this.over = true
+                    if (pre) pre()
                     myFunc('White is in check mate, Black wins!!')
                     myFunc('over')
                     this.eventEmitter.emit('gameOver')
                 } else if (this.checkMate(this.black, this.white, this.board)) {
                     // check to see if black  player is in check mate, if so end game
                     this.over = true
+                    if (pre) pre()
                     myFunc('Black is in check mate, White wins!!')
                     myFunc('over')
                     this.eventEmitter.emit('gameOver')
@@ -498,7 +500,6 @@ export const genMove = (str: string): Tile | null => {
     }
 
     const num2 = parseInt(str[1])
-
     if (typeof num2 === 'number' && typeof num1 === 'number' && num1 && num2) return new Tile(num2, num1)
     return null
 }
