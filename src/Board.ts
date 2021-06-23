@@ -35,13 +35,7 @@ export default class Board {
      */
     inBoard = (tile: Tile): boolean => !(tile.x > this.size || tile.y > this.size || tile.x < 1 || tile.y < 1)
 
-    /**
-     * @param {Player} white White player
-     * @param {Player} black player
-     * @returns {String} the output string
-     */
-    printBoard(white: Player, black: Player): string {
-        let boardString = ''
+    getPieces = (white: Player, black: Player): string[] => {
         const pieces = new Array<string>()
         for (let i = 0; i < this.tiles.length; i++) {
             if (
@@ -106,6 +100,16 @@ export default class Board {
                 pieces.push('bP')
             } else pieces.push('  ')
         }
+        return pieces
+    }
+    /**
+     * @param {Player} white White player
+     * @param {Player} black player
+     * @returns {String} the output string
+     */
+    printBoard(white: Player, black: Player): string {
+        let boardString = ''
+        const pieces = this.getPieces(white, black)
 
         // building the final string by accessing the location of the piece in the pieces array and placing it in the baord string
         boardString += '`\n     1    2    3    4    5    6    7    8  \n'
