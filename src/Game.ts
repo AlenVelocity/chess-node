@@ -48,7 +48,7 @@ export class Game {
         if (!this.over) {
             let whiteTurn = true // variable to determine who's turn it is
             // prints the board to discord.
-            func('White move' + this.board.printBoard(this.white, this.black))
+            func('White move')
 
             // starts the event emitter.
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -91,7 +91,7 @@ export class Game {
                             // run the pawn promotion function on white.
                             this.promotePawn(this.white)
                             // updated board
-                            myFunc('Black move' + this.board.printBoard(this.white, this.black))
+                            myFunc('Black move')
                             // switch turn to black
                             whiteTurn = !success
                         }
@@ -138,7 +138,7 @@ export class Game {
                             this.promotePawn(this.black)
 
                             // update board
-                            myFunc('White move' + this.board.printBoard(this.white, this.black))
+                            myFunc('White move')
 
                             // switch turn to white
                             whiteTurn = success
@@ -175,6 +175,12 @@ export class Game {
             })
         }
     }
+    
+    /**
+     * Method to get the current board layout
+     * @returns {string} current board layout
+     */
+    public getBoard = (): string => this.board.printBoard(this.white, this.black)
 
     /** Algorithm for determining check.
      * @returns {boolean} true if the current player is in check, false if not
