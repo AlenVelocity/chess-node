@@ -84,11 +84,12 @@ Now that you have created a new instance of `Game`, you can now call methods ins
 
 The method `start` starts a new game in the instance of the Game you just created.
 
-`Game.start()` takes 3 arguements. All of them are required.
+`Game.start()` takes 4 arguements. 3 of them are required.
 
 - func
 - whitePlayer
 - blackPlayer
+- pre
 
 ### 1. func
 
@@ -102,13 +103,17 @@ The ID of the white player
 
 The ID of the black player
 
+### 4. pre
+
+A function which will execute right after the move has been made.
+
 Example:
 
 ```TS
 game.start((message) => {
     //This will print the board on to the console each time
     console.log(message)
-}, 'cool_unique_id', 'cooler_unique_id')
+}, 'cool_unique_id', 'cooler_unique_id', () => console.log(game.board.getPieces()))
 ```
 
 ### **Fun Fact: Every TypeScript user thinks they're gods. AND THEY'RE RIGHT!**

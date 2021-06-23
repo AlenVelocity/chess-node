@@ -44,10 +44,11 @@ export class Game {
     /**
      * @param func referance to a function that prints information
      */
-    start = (func: (move: string) => void, whitePlayer: string, blackPlayer: string): void => {
+    start = (func: (move: string) => void, whitePlayer: string, blackPlayer: string, pre?: () => void): void => {
         if (!this.over) {
             let whiteTurn = true // variable to determine who's turn it is
             // prints the board to discord.
+            if (pre) pre()
             func('White move')
 
             // starts the event emitter.
@@ -91,6 +92,7 @@ export class Game {
                             // run the pawn promotion function on white.
                             this.promotePawn(this.white)
                             // updated board
+                            if (pre) pre()
                             myFunc('Black move')
                             // switch turn to black
                             whiteTurn = !success
@@ -138,6 +140,7 @@ export class Game {
                             this.promotePawn(this.black)
 
                             // update board
+                            if (pre) pre()
                             myFunc('White move')
 
                             // switch turn to white
@@ -175,7 +178,7 @@ export class Game {
             })
         }
     }
-    
+
     /**
      * Method to get the current board layout
      * @returns {string} current board layout
