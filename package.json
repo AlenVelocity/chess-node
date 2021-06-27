@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc -p .",
     "lint": "eslint \"src/**/*.ts\"",
-    "doc": "npx typedoc src/**/*.ts",
+    "doc": "typedoc",
     "prepublish": "npm run build",
     "prettier-format": "prettier --config .prettierrc \"src/**/*.ts\" --write"
   },
